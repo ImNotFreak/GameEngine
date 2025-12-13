@@ -13,4 +13,6 @@ protected:
     NonCopyable& operator=(NonCopyable&&) = delete;
 };
 
+#define PLATFORM_BREAK() (__nop(), __debugbreak());
+
 }  

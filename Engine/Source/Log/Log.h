@@ -11,7 +11,18 @@ enum class LogVerbosity : uint8_t
     Display,
     Warning,
     Error,
+    Log,
     Fatal
+};
+
+struct LogCategory
+{
+    explicit LogCategory(const std::string& name) : m_name(name) {};
+
+    std::string name() const { return m_name; }
+
+private:
+    std::string m_name;
 };
 
 class Log final: public NonCopyable
@@ -23,7 +34,7 @@ public:
         return intance;
     }
 
-    void log(LogVerbosity verbosity, const std::string& message) const;
+    void log(const LogCategory& category, LogVerbosity verbosity, const std::string& message) const;
 
 private:
     Log();
@@ -32,4 +43,10 @@ private:
     class Impl;
     std::unique_ptr<Impl> m_pImpl;
 };
+
+#define DEFINE_LOG_CATEGORY_STATIC(logName) \
+namespace\
+{ \
+const LifeExe::LogCategory logName(#logName);\
+}
 }  // namespace LifeExe
