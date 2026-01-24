@@ -13,6 +13,12 @@ protected:
     NonCopyable& operator=(NonCopyable&&) = delete;
 };
 
-#define PLATFORM_BREAK() (__nop(), __debugbreak());
+
 
 }  
+#if defined(_MSC_VER)
+#define PLATFORM_BREAK() (__debugbreak())
+#else
+#include <signal.h>
+#define PLATFORM_BREAK() raise(SIGTRAP)
+#endif
