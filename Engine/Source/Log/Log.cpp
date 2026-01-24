@@ -27,9 +27,9 @@ constexpr const char* c_timestampFormat = "{:%Y.%d.%m-%H.%M.%S}";
 constexpr const char* c_logFilePrefix = "LifeExe";
 constexpr const char* c_logFileExtintion = "txt";
 const fs::path c_logDirectory = fs::path("logs");
-}
+}  // namespace
 
-//pImpl
+// pImpl
 
 class Log::Impl
 {
@@ -56,7 +56,6 @@ public:
         if (m_fileLogger->should_log(spdLevel))
         {
             m_fileLogger->log(spdLevel, message);
-
         }
 
         if (verbosity == LogVerbosity::Fatal)
@@ -70,27 +69,27 @@ private:
     std::unique_ptr<spdlog::logger> m_fileLogger;
 
     fs::path makeLogFile() const
-    { 
+    {
         fs::create_directory(c_logDirectory);
         const auto now = std::chrono::system_clock::now();
         const auto now_seconds = std::chrono::floor<std::chrono::seconds>(now);
-        const std::string timestamp = std::format(c_timestampFormat, now_seconds); 
+        const std::string timestamp = std::format(c_timestampFormat, now_seconds);
         const std::string logName = std::format("{}-{}.{}", c_logFilePrefix, timestamp, c_logFileExtintion);
-            //"Lifemy_file_name.txt";
+        //"Lifemy_file_name.txt";
 
         return c_logDirectory / logName;
     }
 };
 
-Log::Log(): m_pImpl(std::make_unique<Impl>()) {}
+Log::Log() : m_pImpl(std::make_unique<Impl>()) {}
 
 Log::~Log() = default;
 
 void Log::log(const LogCategory& category, LogVerbosity verbosity, const std::string& message, bool showLocation,
     const std::source_location location) const
 {
-    const std::string fmtMsg = showLocation ? std::format("[{}] [{}:{}] {}", category.name(),location.function_name(), location.line(), message)
-        : std::format("[{}] {}", category.name(), message);
+    const std::string fmtMsg = showLocation
+                                   ? std::format("[{}] [{}:{}] {}", category.name(), location.function_name(), location.line(), message)
+                                   : std::format("[{}] {}", category.name(), message);
     m_pImpl->log(verbosity, fmtMsg);
 }
-

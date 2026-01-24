@@ -1,8 +1,8 @@
 #include "Core/Engine.h"
 #include "stdlib.h"
 
-int main() 
+int main()
 {
-	const LifeExe::Engine engine;
-	return EXIT_SUCCESS;
+    const LifeExe::Engine engine;
+    return EXIT_SUCCESS;
 }

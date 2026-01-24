@@ -50,13 +50,12 @@ private:
 
 constexpr LogVerbosity c_minVerbosity = LogVerbosity::Display;
 constexpr LogVerbosity c_maxVerbosity = LogVerbosity::Fatal;
-//consepts
+// consepts
 template <typename T>
 concept ValidLogCategory = std::constructible_from<LogCategory, T>;
 
 template <typename T>
 concept LoggableMessage = std::convertible_to<T, std::string> || std::convertible_to<T, std::string_view>;
-
 
 template <LogVerbosity V>
 concept LogVerbosityLevel = V == LogVerbosity::NoLogging || V == LogVerbosity::Display || V == LogVerbosity::Warning ||
@@ -69,19 +68,20 @@ concept LogVerbosityLevel = V == LogVerbosity::NoLogging || V == LogVerbosity::D
     const LifeExe::LogCategory logName(#logName); \
     }
 
-#define LE_LOG_IMPL(categoryName, verbosity, showLocation, formatStr, ...)                                          \
-    do                                                                                                              \
-    {                                                                                                               \
-        if constexpr (LifeExe::LogVerbosity::verbosity >= LifeExe::c_minVerbosity &&                                \
-                      LifeExe::LogVerbosity::verbosity <= LifeExe::c_maxVerbosity)                                  \
-        {                                                                                                           \
+#define LE_LOG_IMPL(categoryName, verbosity, showLocation, formatStr, ...)                                                        \
+    do                                                                                                                            \
+    {                                                                                                                             \
+        if constexpr (LifeExe::LogVerbosity::verbosity >= LifeExe::c_minVerbosity &&                                              \
+                      LifeExe::LogVerbosity::verbosity <= LifeExe::c_maxVerbosity)                                                \
+        {                                                                                                                         \
+            static_assert(LifeExe::LogVerbosityLevel<LifeExe::LogVerbosity::verbosity>,                                           \
+                "Verbosity must be one of: NoLogging, Display, Warning, Error, Log, Fatal");                                      \
+            static_assert(LifeExe::ValidLogCategory<decltype(categoryName)>, "Category must be of type LogCategory");             \
             static_assert(                                                                                                        \
-                LifeExe::LogVerbosityLevel<LifeExe::LogVerbosity::verbosity>, "Verbosity must be one of: NoLogging, Display, Warning, Error, Log, Fatal");                                                                                                        \
-            static_assert(LifeExe::ValidLogCategory<decltype(categoryName)>, "Category must be of type LogCategory");                                                                                                        \
-            static_assert(LifeExe::LoggableMessage<decltype(formatStr)>, "Message must be convertable to std::string or std::string_view");                                                                                                        \
-            LifeExe::Log::getInstance().log(                                                                        \
-                categoryName, LifeExe::LogVerbosity::verbosity, std::format(formatStr, __VA_ARGS__), showLocation); \
-        }                                                                                                           \
+                LifeExe::LoggableMessage<decltype(formatStr)>, "Message must be convertable to std::string or std::string_view"); \
+            LifeExe::Log::getInstance().log(                                                                                      \
+                categoryName, LifeExe::LogVerbosity::verbosity, std::format(formatStr __VA_OPT__(, ) __VA_ARGS__), showLocation); \
+        }                                                                                                                         \
     } while (0)
 
 #define LE_LOG(categoryName, verbosity, formatStr, ...) LE_LOG_IMPL(categoryName, verbosity, false, formatStr, __VA_ARGS__)

@@ -13,9 +13,7 @@ protected:
     NonCopyable& operator=(NonCopyable&&) = delete;
 };
 
-
-
-}  
+}  // namespace LifeExe
 #if defined(_MSC_VER)
 #define PLATFORM_BREAK() (__debugbreak())
 #else
