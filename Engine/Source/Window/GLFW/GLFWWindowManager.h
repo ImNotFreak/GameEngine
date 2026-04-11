@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include "Core/Utility.h"
 
-
 namespace LifeExe
 {
 
@@ -15,7 +14,7 @@ class GLFWWindowManager final : public IWindowManager, public NonCopyable
 public:
     GLFWWindowManager();
     ~GLFWWindowManager() override;
-    
+
     void update() override;
     bool areAllWindowsClosed() const override;
     std::expected<WindowId, WindowCreationError> createWindow(const WindowSettings& settings) override;
@@ -28,4 +27,4 @@ private:
     WindowId m_windowCounter{1};
 };
 
-}
+}  // namespace LifeExe

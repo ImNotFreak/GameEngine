@@ -70,7 +70,7 @@ private:
 
     fs::path makeLogFile() const
     {
-        
+
         const auto now = std::chrono::system_clock::now();
         const auto now_seconds = std::chrono::floor<std::chrono::seconds>(now);
         const std::string timestamp = std::format(c_timestampFormat, now_seconds);

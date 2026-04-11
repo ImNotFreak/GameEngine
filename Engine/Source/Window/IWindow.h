@@ -2,7 +2,6 @@
 #include <string>
 #include <functional>
 
-
 namespace LifeExe
 {
 struct WindowId
@@ -31,12 +30,11 @@ struct WindowSettings
 class IWindow
 {
 public:
-    
     virtual ~IWindow() = default;
 
     virtual void setTitle(const std::string& title) = 0;
     virtual bool isValid() const = 0;
-    virtual bool shouldClose() const =0 ;
+    virtual bool shouldClose() const = 0;
 };
 
 }  // namespace LifeExe

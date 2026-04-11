@@ -21,14 +21,12 @@ Engine::Engine(std::unique_ptr<IWindowManager> windowManager) : m_windowManager(
     {
         window->setTitle(std::format("INIT ENGIENE, VERSION {}", version()));
     }
-    m_windowManager->createWindow(WindowSettings{});
     m_initialized = true;
 }
 
-
 Engine::~Engine() = default;
 
-void Engine::run() 
+void Engine::run()
 {
 
     if (!m_initialized)

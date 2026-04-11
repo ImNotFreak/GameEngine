@@ -5,7 +5,7 @@ using namespace LifeExe;
 
 TEST(WindowIdTest, WindowIdIncrementShouldWorkCorrectly)
 {
-    WindowId id {13};
+    WindowId id{13};
     const WindowId original = id;
     const WindowId after = id++;
 
@@ -14,7 +14,7 @@ TEST(WindowIdTest, WindowIdIncrementShouldWorkCorrectly)
     EXPECT_EQ(id.value, 14);
 }
 
-TEST(WindowIdTest, WindowIdComparisonWorkCorrectly) 
+TEST(WindowIdTest, WindowIdComparisonWorkCorrectly)
 {
     WindowId id1{5};
     WindowId id2{5};

@@ -5,7 +5,7 @@ using namespace LifeExe;
 
 DEFINE_LOG_CATEGORY_STATIC(LogWinAPIWindow);
 
-WinAPIWindow::WinAPIWindow(const WindowSettings& settings) 
+WinAPIWindow::WinAPIWindow(const WindowSettings& settings)
 {
     LE_LOG(LogWinAPIWindow, Error, "WinAPI window is not implemented!");
 }

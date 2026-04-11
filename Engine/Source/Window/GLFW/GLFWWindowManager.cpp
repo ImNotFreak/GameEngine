@@ -3,16 +3,13 @@
 #include "Log/Log.h"
 #include <GLFW/glfw3.h>
 
-
 using namespace LifeExe;
 DEFINE_LOG_CATEGORY_STATIC(LogGLFWWindowManager);
 
-GLFWWindowManager::GLFWWindowManager() 
+GLFWWindowManager::GLFWWindowManager()
 {
-    glfwSetErrorCallback([](int errorCode, const char* description) 
-    { 
-        LE_LOG(LogGLFWWindowManager, Error, "GLFW error, code: {}, description: {}!", errorCode, description);
-    });
+    glfwSetErrorCallback([](int errorCode, const char* description)
+        { LE_LOG(LogGLFWWindowManager, Error, "GLFW error, code: {}, description: {}!", errorCode, description); });
 
     if (!glfwInit())
     {
@@ -36,7 +33,7 @@ GLFWWindowManager::~GLFWWindowManager()
     LE_LOG(LogGLFWWindowManager, Display, "GLFW shutdown complete!");
 }
 
-void GLFWWindowManager::update() 
+void GLFWWindowManager::update()
 {
     if (!m_initialized) return;
     glfwPollEvents();
@@ -48,7 +45,7 @@ bool GLFWWindowManager::areAllWindowsClosed() const
     return m_windows.empty();
 }
 
- std::expected<WindowId, WindowCreationError> GLFWWindowManager::createWindow(const WindowSettings& settings)
+std::expected<WindowId, WindowCreationError> GLFWWindowManager::createWindow(const WindowSettings& settings)
 {
     if (!m_initialized)
     {
@@ -56,7 +53,7 @@ bool GLFWWindowManager::areAllWindowsClosed() const
         return std::unexpected(WindowCreationError::ManagerIsNotInitialized);
     }
 
-    auto window = std::make_shared<GLFWWindow>(settings);
+    auto window = std::make_shared<GLFWWindow>(m_windowCounter, settings);
 
     if (!window->isValid())
     {
@@ -76,10 +73,11 @@ bool GLFWWindowManager::areAllWindowsClosed() const
 std::shared_ptr<IWindow> GLFWWindowManager::getWindowById(WindowId id) const
 {
     const auto it = m_windows.find(id);
-    return it != m_windows.end() ? it ->second : nullptr;
+    return it != m_windows.end() ? it->second : nullptr;
 }
 
-void GLFWWindowManager::cleanupClosedWindows() {
+void GLFWWindowManager::cleanupClosedWindows()
+{
     auto it = m_windows.begin();
     while (it != m_windows.end())
     {

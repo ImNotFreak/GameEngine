@@ -31,7 +31,7 @@ TEST(LogConceptsTest, LogMessageTypeShouldBeValid)
     static_assert(!LoggableMessage<int>);
     static_assert(!LoggableMessage<float>);
     static_assert(!LoggableMessage<bool>);
-    static_assert(!LoggableMessage<void *>);
+    static_assert(!LoggableMessage<void*>);
 }
 
 TEST(LogConceptsTest, LogVerbosityTypeShouldBeValid)
